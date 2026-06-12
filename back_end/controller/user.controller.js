@@ -7,6 +7,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js";
 
+// CONTROLLER FOR REGISTERING THE USER
 const register_user = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
     const filePath = req.file?.path;
@@ -40,6 +41,7 @@ const register_user = asyncHandler(async (req, res) => {
     );
 });
 
+// CONTROLLER FOR LOGGIN IN USER 
 const login_Controller = asyncHandler(async (req, res) => {
     const { password, email } = req.body;
 
@@ -85,6 +87,7 @@ const login_Controller = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, { user: loggedInUser, accessToken }, "User logged in successfully"));
 });
 
+// CONTROLLER FOR LOGGING OUT USER
 const logoutUser = asyncHandler(async (req, res) => {
     const userId = req.user?._id;
 
@@ -110,6 +113,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "Logout successful"));
 });
 
+// CONTROLLER FOR GETTING CURRENT USER
 const currentuser = asyncHandler(async (req, res) => {
     const user = req.user;
 
@@ -121,5 +125,39 @@ const currentuser = asyncHandler(async (req, res) => {
         new ApiResponse(200, user, "Current user fetched successfully")
     );
 });
+// CONTROLLER FOR DELETING A USER (ADMIN ONLY)
+const delete_user = asyncHandler(async (req, res) => {
+    const userId = req.params?.id || req.query?.id;
+    if(!userId){
+        throw new ApiError(400, "User ID is required");
+    }
+    const user = await User.findByIdAndDelete(userId);
 
-export { register_user, login_Controller, logoutUser, currentuser };
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }   
+    return res.status(200).json(
+        new ApiResponse(200, {}, "User deleted successfully")
+    );
+});
+
+//TICKETS STATS (ADMIN ONLY)
+const ticketsStat = asyncHandler(async (req,res)=>{
+
+    const stats = await Ticket.aggregate([
+    {
+        $group: {
+            _id: "$status",
+            count: {
+                $sum: 1,
+            },
+        },
+    },
+]);
+
+return res.json(
+    new ApiResponse(200,stats,"Stats has been found !")
+)
+
+})
+export { register_user, login_Controller, logoutUser, currentuser, delete_user,ticketsStat };

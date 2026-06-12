@@ -6,6 +6,8 @@ import morgan from 'morgan';
 import helmet from "helmet";
 import cookieParser from 'cookie-parser';
 import userRouter from "./routes/user.routes.js"
+import ticketsRouter from "./routes/tickets.routes.js";
+import commentsRouter from "./routes/comments.route.js";
 
 const app = express();
 app.use(express.json());
@@ -22,11 +24,9 @@ app.use(morgan("dev"));
 app.use(helmet())
 
 
-app.get("/",(req,res)=>{
-    return res.send("The backend is working !")
-})
-
 app.use("/api/v1/user", userRouter)
+app.use("/api/v1/tickets", ticketsRouter)
+app.use("/api/v1/comments", commentsRouter)
 
 
 

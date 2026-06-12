@@ -1,20 +1,43 @@
 
 import { Router } from "express";
+
 import { upload } from "../middlewares/multer.middleware.js";
-import { validate } from "../middlewares/userDataValidator.js";
+
+import { validate } from "../middlewares/dataValidator.js";
+
 import { authMiddleware } from "../middlewares/auth.middleware.js";
+
 import { regesterUser, loginData } from "../validaters/userDataValidator.js";
-import { register_user, login_Controller, logoutUser, currentuser } from "../controller/user.controller.js";
+
+import { register_user, login_Controller, logoutUser, currentuser,delete_user,ticketsStat } from "../controller/user.controller.js";
+
+import { createRateLimit } from "../middlewares/rateLimiter.middleware.js";
+
+import {isAdminMiddleware} from "../middlewares/isAdmin.middleware.js";
+
+
+
+
+
+const registerRateLimit = createRateLimit({ windowMs: 15 * 60 * 1000, limit: 5 });
+const loginRateLimit = createRateLimit({ windowMs : 15 * 60 * 1000, limit: 5 }); 
 
 const router = Router();
+// PUBLIC ROUTES
+router.post("/register-user",
+  (req, res, next) => {
+    console.log("REGISTER ROUTE HIT");
+    next();
+  }, registerRateLimit, upload.single("profileImage"), validate(regesterUser), register_user);
+router.post("/login", loginRateLimit, validate(loginData), login_Controller);
 
-router.get("/hello", (req, res) => {
-    return res.send('Hello i am from backend server !!')
-})
+// PROTECTED ROUTES
+router.use(authMiddleware);
+router.post("/logout", logoutUser);
+router.get("/current-user", currentuser);
+router.delete('/delete-user/:id', isAdminMiddleware, delete_user);
+router.get("/admin/dashboard",isAdminMiddleware,ticketsStat)
 
-router.post("/register", upload.single("profileImage"), validate(regesterUser), register_user);
-router.post("/login", validate(loginData), login_Controller);
-router.post("/logout", authMiddleware, logoutUser);
-router.get("/me", authMiddleware, currentuser);
+
 
 export default router;
