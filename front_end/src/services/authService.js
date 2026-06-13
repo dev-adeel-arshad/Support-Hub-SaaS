@@ -28,4 +28,15 @@ const loginUser = async (data) => {
     }
 };
 
-export { registerUser, loginUser };
+const currentUser = async () => {
+    try {
+        const result = await axiosInstance.get("/user/current-user");
+        return result.data;
+    }
+    catch (error) {
+        console.log("Status:", error.response?.status);
+    console.log("Response:", error.response?.data);
+        throw error;
+    }   
+};
+export { registerUser, loginUser, currentUser  };    

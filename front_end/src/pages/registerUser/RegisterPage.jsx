@@ -44,45 +44,65 @@ console.log("Profile:", formData.get("profileImage"));
     }
 };
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-                label="Username"
-                type="text"
-                placeholder="Enter Username:"
-                register={register("username")}
-                error={errors.username}
-            />
+     return (
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
 
-            <Input
-                label="Email :"
-                placeholder="Enter Email"
-                type="email"
-                register={register("email")}
-                error={errors.email}
-            />
-            <Input
-                label="Password :"
-                type="password"
-                placeholder="Enter Password"
-                register={register("password")}
-                error={errors.password}
-            />
+            <div className="mb-8 text-center">
+                <h1 className="text-3xl font-bold text-slate-800">
+                    Create Account
+                </h1>
 
+                <p className="text-slate-500 mt-2">
+                    Join SupportHub and start managing tickets
+                </p>
+            </div>
 
-            <Input
-                label="Profile Image (optional):"
-                type="file"
-                register={register("profileImage")}
-                error={errors.profileImage}
-            />
-
-            <Button
-                type="submit"
-                disabled={isSubmitting}
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="space-y-5"
             >
-                {isSubmitting ? "Loading" : "Register"}
-            </Button>
-        </form>
-    )
+                <Input
+                    label="Username"
+                    type="text"
+                    placeholder="Enter Username"
+                    register={register("username")}
+                    error={errors.username}
+                />
+
+                <Input
+                    label="Email"
+                    type="email"
+                    placeholder="Enter Email"
+                    register={register("email")}
+                    error={errors.email}
+                />
+
+                <Input
+                    label="Password"
+                    type="password"
+                    placeholder="Enter Password"
+                    register={register("password")}
+                    error={errors.password}
+                />
+
+                <Input
+                    label="Profile Image (Optional)"
+                    type="file"
+                    register={register("profileImage")}
+                    error={errors.profileImage}
+                />
+
+                <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting
+                        ? "Creating Account..."
+                        : "Create Account"}
+                </Button>
+            </form>
+        </div>
+    </div>
+);
 } 
