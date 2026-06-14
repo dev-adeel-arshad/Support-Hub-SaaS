@@ -146,13 +146,6 @@ Used for request logging during development.
 
 Used for managing environment variables.
 
-#### NanoID
-
-Used for generating unique and readable ticket IDs.
-
-#### Day.js
-
-Used for date formatting and manipulation.
 
 ---
 
