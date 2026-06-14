@@ -4,11 +4,15 @@ import { loginUser } from "../../services/authService";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
+import { useQueryClient } from "@tanstack/react-query";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
 
 export default function Login() {
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const {
         register,
@@ -27,6 +31,11 @@ export default function Login() {
             const result = await loginUser(data);
 
             console.log(result);
+
+            await queryClient.invalidateQueries(["current-user"]);
+
+            
+            navigate("/");
 
         } catch (error) {
 
