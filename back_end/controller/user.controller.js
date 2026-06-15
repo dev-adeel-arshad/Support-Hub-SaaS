@@ -6,7 +6,7 @@ import { uploadOnCloudinary } from "../config/cloudinary.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js";
-
+import { Ticket } from "../models/ticket.model.js";
 // CONTROLLER FOR REGISTERING THE USER
 const register_user = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
@@ -141,23 +141,69 @@ const delete_user = asyncHandler(async (req, res) => {
     );
 });
 
+// GET ALL USERS (ADMIN ONLY)
+const getAllUsers = asyncHandler(async (req, res) => {
+
+    const users = await User.find({})
+        .select("-password -accessToken")
+        .sort({ createdAt: -1 });
+
+    return res.status(200).json(
+        new ApiResponse(200, users, "Users fetched successfully")
+    );
+});
+
 //TICKETS STATS (ADMIN ONLY)
-const ticketsStat = asyncHandler(async (req,res)=>{
+const ticketsStat = asyncHandler(async (req, res) => {
 
     const stats = await Ticket.aggregate([
-    {
-        $group: {
-            _id: "$status",
-            count: {
-                $sum: 1,
+        {
+            $group: {
+                _id: "$status",
+                count: {
+                    $sum: 1,
+                },
             },
         },
-    },
-]);
+    ]);
 
-return res.json(
-    new ApiResponse(200,stats,"Stats has been found !")
-)
+    const dashboardStats = {
+        totalTickets: 0,
+        openTickets: 0,
+        inProgressTickets: 0,
+        resolvedTickets: 0,
+        closedTickets: 0,
+    };
 
-})
-export { register_user, login_Controller, logoutUser, currentuser, delete_user,ticketsStat };
+    stats.forEach((item) => {
+
+        dashboardStats.totalTickets += item.count;
+
+        if (item._id === "open") {
+            dashboardStats.openTickets = item.count;
+        }
+
+        if (item._id === "in-progress") {
+            dashboardStats.inProgressTickets = item.count;
+        }
+
+        if (item._id === "resolved") {
+            dashboardStats.resolvedTickets = item.count;
+        }
+
+        if (item._id === "closed") {
+            dashboardStats.closedTickets = item.count;
+        }
+
+    });
+
+    return res.json(
+        new ApiResponse(
+            200,
+            dashboardStats,
+            "Dashboard stats fetched successfully"
+        )
+    );
+
+});
+export { register_user, login_Controller, logoutUser, currentuser, delete_user, getAllUsers, ticketsStat };

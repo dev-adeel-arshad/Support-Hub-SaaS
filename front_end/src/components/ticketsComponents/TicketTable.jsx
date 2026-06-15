@@ -1,8 +1,11 @@
+import { Link } from "react-router-dom";
+
 import TicketStatusBadge from "./TicketStatusBadge";
 import TicketPriorityBadge from "./TicketPriorityBadge";
 
 export default function TicketTable({
     tickets,
+    getTicketLink,
 }) {
 
     return (
@@ -37,11 +40,24 @@ export default function TicketTable({
 
                         <tr
                             key={ticket._id}
-                            className="border-b"
+                            className="border-b hover:bg-slate-50 transition cursor-pointer"
+                            onClick={() => getTicketLink && window.location.assign(getTicketLink(ticket))}
                         >
 
                             <td className="p-4">
-                                {ticket.title}
+                                {getTicketLink ? (
+                                    <Link
+                                        to={getTicketLink(ticket)}
+                                        className="font-medium text-slate-900 hover:text-blue-600 transition"
+                                        onClick={(event) => event.stopPropagation()}
+                                    >
+                                        {ticket.title}
+                                    </Link>
+                                ) : (
+                                    <span className="font-medium text-slate-900">
+                                        {ticket.title}
+                                    </span>
+                                )}
                             </td>
 
                             <td className="p-4">

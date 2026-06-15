@@ -22,7 +22,7 @@ export default function ProtectedRoute() {
 
     }
 
-    if (isError || !data?.data?.user) {
+    if (isError || !data?.data) {
 
        return <Navigate to="/login" replace />
 

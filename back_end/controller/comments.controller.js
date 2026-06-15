@@ -13,19 +13,22 @@ const addComment = asyncHandler(async (req, res) => {
     const { message } = req.body;
 
     if (!message?.trim()) {
-        throw new ApiError(
-            400,
-            "Comment message is required"
-        );
+        throw new ApiError(400, "Comment message is required");
     }
 
     const ticket = await Ticket.findById(ticketId);
 
     if (!ticket) {
-        throw new ApiError(
-            404,
-            "Ticket not found"
-        );
+        throw new ApiError(404, "Ticket not found");
+    }
+
+    const isOwner =
+        ticket.createdBy.toString() === req.user._id.toString();
+
+    const isAdmin = req.user.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+        throw new ApiError(403, "Access denied to comment on this ticket");
     }
 
     const comment = await Comment.create({
@@ -34,15 +37,19 @@ const addComment = asyncHandler(async (req, res) => {
         message,
     });
 
+    const populated = await comment.populate(
+        "user",
+        "username email role"
+    );
+
     return res.status(201).json(
         new ApiResponse(
             201,
-            comment,
+            populated,
             "Comment added successfully"
         )
     );
 });
-
 
 // GET ALL COMMENTS OF A TICKET
 const getComments = asyncHandler(async (req, res) => {

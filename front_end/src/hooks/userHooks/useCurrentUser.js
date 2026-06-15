@@ -5,5 +5,7 @@ export const useCurrentUser = () => {
     return useQuery({
         queryKey: ["current-user"],
         queryFn: currentUser,
+        staleTime: 60 * 1000,
+        refetchOnWindowFocus: false,
     });
 };

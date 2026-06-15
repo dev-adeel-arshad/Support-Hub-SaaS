@@ -6,7 +6,7 @@ export const getComments = async (ticketId) => {
     try {
 
         const result = await axiosInstance.get(
-            `/comments/${ticketId}`
+            `/comments/ticket/${ticketId}`
         );
 
         return result.data;
@@ -31,7 +31,7 @@ export const addComment = async ({
     try {
 
         const result = await axiosInstance.post(
-            `/comments/${ticketId}`,
+            `/comments/ticket/${ticketId}`,
             {
                 message,
             }

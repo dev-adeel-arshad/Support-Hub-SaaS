@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import { Ticket } from "../models/ticket.model.js";
+import { AssignablePerson } from "../models/assignable.model.js";
 
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -63,14 +64,12 @@ const userTickets = asyncHandler(async (req, res) => {
 
     const tickets = await Ticket.find({
         createdBy: req.user._id,
-    });
+    })
+    .populate("assignedTo", "username email")
+    .sort({ createdAt: -1 });
 
     return res.status(200).json(
-        new ApiResponse(
-            200,
-            tickets,
-            "User tickets fetched successfully"
-        )
+        new ApiResponse(200, tickets, "User tickets fetched successfully")
     );
 });
 
@@ -80,31 +79,25 @@ const getTicket = asyncHandler(async (req, res) => {
 
     const { id } = req.params;
 
-    if (!id) {
-        throw new ApiError(
-            400,
-            "Ticket id is required"
-        );
-    }
-
-    const ticket = await Ticket.findOne({
-        _id: id,
-        createdBy: req.user._id,
-    });
+    const ticket = await Ticket.findById(id)
+        .populate("createdBy", "username email")
+        .populate("assignedTo", "username email");
 
     if (!ticket) {
-        throw new ApiError(
-            404,
-            "Ticket not found"
-        );
+        throw new ApiError(404, "Ticket not found");
+    }
+
+    const isOwner =
+        ticket.createdBy._id.toString() === req.user._id.toString();
+
+    const isAdmin = req.user.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+        throw new ApiError(403, "Access denied");
     }
 
     return res.status(200).json(
-        new ApiResponse(
-            200,
-            ticket,
-            "Ticket fetched successfully"
-        )
+        new ApiResponse(200, ticket, "Ticket fetched successfully")
     );
 });
 
@@ -112,15 +105,27 @@ const getTicket = asyncHandler(async (req, res) => {
 // GET ALL TICKETS (ADMIN)
 const getAllTickets = asyncHandler(async (req, res) => {
 
-    const tickets = await Ticket.find()
+    const { status, priority, search } = req.query;
+
+    let filter = {};
+
+    if (status) filter.status = status;
+    if (priority) filter.priority = priority;
+
+    if (search) {
+        filter.title = { $regex: search, $options: "i" };
+    }
+
+    const tickets = await Ticket.find(filter)
         .populate("createdBy", "username email")
-        .populate("assignedTo", "username email");
+        .populate("assignedTo", "username email")
+        .sort({ createdAt: -1 });
 
     return res.status(200).json(
         new ApiResponse(
             200,
             tickets,
-            "All tickets fetched successfully"
+            "Filtered tickets fetched successfully"
         )
     );
 });
@@ -179,17 +184,30 @@ const changeStatus = asyncHandler(async (req, res) => {
 const assignTicket = asyncHandler(async (req, res) => {
 
     const { id } = req.params;
-    const { assignedTo } = req.body;
+    const { assignedTo, assignedToEmail } = req.body;
 
-    if (!assignedTo) {
+    if (!assignedTo && !assignedToEmail) {
         throw new ApiError(
             400,
-            "assignedTo field is required"
+            "assignedTo or assignedToEmail field is required"
         );
     }
 
-    const assignedUser =
-        await User.findById(assignedTo);
+    let assignedUser = null;
+
+    if (assignedToEmail) {
+        const isAllowed = await AssignablePerson.findOne({ email: assignedToEmail });
+        if (!isAllowed) {
+            throw new ApiError(
+                403,
+                "This user is not in the assignable people list"
+            );
+        }
+
+        assignedUser = await User.findOne({ email: assignedToEmail });
+    } else {
+        assignedUser = await User.findById(assignedTo);
+    }
 
     if (!assignedUser) {
         throw new ApiError(
@@ -202,7 +220,7 @@ const assignTicket = asyncHandler(async (req, res) => {
         await Ticket.findByIdAndUpdate(
             id,
             {
-                assignedTo,
+                assignedTo: assignedUser._id,
                 status: "in-progress",
             },
             {

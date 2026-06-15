@@ -44,6 +44,30 @@ export const getMyTickets = async () => {
     }
 };
 
+// GET ALL TICKETS (ADMIN)
+export const getAllTickets = async (filters = {}) => {
+    try {
+
+        const result = await axiosInstance.get(
+            "/tickets/all",
+            {
+                params: filters,
+            }
+        );
+
+        return result.data;
+
+    } catch (error) {
+
+        console.error(
+            "Error fetching all tickets:",
+            error
+        );
+
+        throw error;
+    }
+};
+
 // GET SINGLE TICKET
 export const getTicketById = async (id) => {
     try {
@@ -63,4 +87,22 @@ export const getTicketById = async (id) => {
 
         throw error;
     }
+};
+
+
+export const getTicket = async (id) => {
+    return await axiosInstance.get(`/tickets/${id}`);
+};
+
+export const changeTicketStatus = async ({ id, status }) => {
+    return await axiosInstance.patch(`/tickets/${id}/status`, {
+        status,
+    });
+};
+
+export const assignTicket = async ({ id, userId, assignedToEmail }) => {
+    return await axiosInstance.patch(`/tickets/${id}/assign`, {
+        assignedTo: userId,
+        assignedToEmail,
+    });
 };

@@ -18,7 +18,7 @@ export default function CommentSection({
         useQueryClient();
 
     const mutation =
-        useAddComment();
+        useAddComment(ticketId);
 
     const handleSubmit =
         async (e) => {
@@ -83,9 +83,7 @@ export default function CommentSection({
                         placeholder="Add comment..."
                     />
 
-                    <button
-                        className="mt-3 bg-blue-600 text-white px-5 py-2 rounded-lg"
-                    >
+                    <button className="mt-3 bg-blue-600 text-white px-5 py-2 rounded-lg">
                         Add Comment
                     </button>
 

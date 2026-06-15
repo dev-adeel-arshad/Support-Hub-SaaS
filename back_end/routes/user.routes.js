@@ -9,7 +9,7 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 import { regesterUser, loginData } from "../validaters/userDataValidator.js";
 
-import { register_user, login_Controller, logoutUser, currentuser,delete_user,ticketsStat } from "../controller/user.controller.js";
+import { register_user, login_Controller, logoutUser, currentuser,delete_user,getAllUsers,ticketsStat } from "../controller/user.controller.js";
 
 import { createRateLimit } from "../middlewares/rateLimiter.middleware.js";
 
@@ -35,9 +35,10 @@ router.post("/login", loginRateLimit, validate(loginData), login_Controller);
 router.use(authMiddleware);
 router.post("/logout", logoutUser);
 router.get("/current-user", currentuser);
+router.get("/admin/users", isAdminMiddleware, getAllUsers);
 router.delete('/delete-user/:id', isAdminMiddleware, delete_user);
 router.get("/admin/dashboard",isAdminMiddleware,ticketsStat)
 
 
 
-export default router;
+export default router; 
