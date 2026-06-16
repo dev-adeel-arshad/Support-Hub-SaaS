@@ -7,11 +7,12 @@ export default function Input({
 }) {
     return (
         <div className="flex flex-col gap-2">
+
             <label
                 className="
                     text-sm
                     font-medium
-                    text-slate-700
+                    text-slate-300
                 "
             >
                 {label}
@@ -22,30 +23,30 @@ export default function Input({
                 placeholder={placeholder}
                 {...register}
                 className="
-                    rounded-lg
+                    w-full
+                    rounded-xl
                     border
-                    border-slate-300
+                    border-slate-700
+                    bg-slate-800
+                    text-white
+                    placeholder:text-slate-500
                     px-4
                     py-3
                     outline-none
                     transition-all
-                    duration-200
+                    duration-300
                     focus:border-blue-500
                     focus:ring-2
-                    focus:ring-blue-200
+                    focus:ring-blue-500/30
                 "
             />
 
             {error && (
-                <p
-                    className="
-                        text-sm
-                        text-red-500
-                    "
-                >
+                <p className="text-sm text-red-400">
                     {error.message}
                 </p>
             )}
+
         </div>
     );
 }

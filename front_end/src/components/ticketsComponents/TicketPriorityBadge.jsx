@@ -1,16 +1,13 @@
-export default function TicketPriorityBadge({
-    priority,
-}) {
-
+export default function TicketPriorityBadge({ priority }) {
     const priorityStyles = {
-        low: "bg-green-100 text-green-700",
-        medium: "bg-yellow-100 text-yellow-700",
-        high: "bg-red-100 text-red-700",
+        low: "bg-green-500/10 text-green-400 border-green-500/30",
+        medium: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+        high: "bg-red-500/10 text-red-400 border-red-500/30",
     };
 
     return (
         <span
-            className={`px-3 py-1 rounded-full text-sm font-medium ${priorityStyles[priority] || "bg-gray-100 text-gray-700"}`}
+            className={`px-3 py-1 rounded-full text-xs font-medium border ${priorityStyles[priority] || "bg-slate-800 text-slate-300 border-slate-700"}`}
         >
             {priority}
         </span>

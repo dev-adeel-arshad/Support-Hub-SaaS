@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 
 import { useCurrentUser } from "../../hooks/userHooks/useCurrentUser";
+import { useAssignedTickets } from "../../hooks/ticketHooks/useAssignedTickets";
+import { useAssignees } from "../../hooks/userHooks/useAssignablePeople";
 
 export default function ProfilePage() {
     const { data } = useCurrentUser();
     const user = data?.data;
+    const { data: assignedData } = useAssignedTickets({ enabled: !!user });
+    const assignedTickets = assignedData?.data || [];
+    const { data: assigneesData } = useAssignees();
+    const assignees = assigneesData?.data || [];
 
     if (!user) {
         return null;
@@ -20,7 +26,7 @@ export default function ProfilePage() {
                     <p className="mt-2 text-slate-400">Role: {user.role}</p>
                 </section>
 
-                <section className="grid gap-6 md:grid-cols-2">
+                <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {user.role === "admin" ? (
                         <>
                             <Link to="/dashboard" className="rounded-3xl border border-slate-800 bg-slate-900 p-6 transition hover:bg-slate-800">
@@ -31,9 +37,10 @@ export default function ProfilePage() {
                                 <h2 className="text-xl font-semibold text-white">User Directory</h2>
                                 <p className="mt-3 text-slate-400">See all registered users and assign tickets by email.</p>
                             </Link>
-                            <Link to="/admin/assignable" className="rounded-3xl border border-slate-800 bg-slate-900 p-6 transition hover:bg-slate-800">
-                                <h2 className="text-xl font-semibold text-white">Assignable People</h2>
-                                <p className="mt-3 text-slate-400">Add or remove approved people admins can assign tickets to.</p>
+                            <Link to="/admin/assignees" className="rounded-3xl border border-slate-800 bg-slate-900 p-6 transition hover:bg-slate-800">
+                                <h2 className="text-xl font-semibold text-white">Manage Assignees</h2>
+                                <p className="mt-3 text-slate-400">Add or remove team members from the assignee pool.</p>
+                                <p className="mt-4 text-2xl font-bold text-blue-400">{assignees.length} assignee{assignees.length !== 1 ? 's' : ''}</p>
                             </Link>
                         </>
                     ) : (
@@ -47,6 +54,13 @@ export default function ProfilePage() {
                                 <h2 className="text-xl font-semibold text-white">Create Ticket</h2>
                                 <p className="mt-3 text-slate-400">Open a new request for the support team.</p>
                             </Link>
+
+                            {(user?.role === "assignee" || assignedTickets.length > 0) && (
+                                <Link to="/assigned" className="rounded-3xl border border-slate-800 bg-slate-900 p-6 transition hover:bg-slate-800">
+                                    <h2 className="text-xl font-semibold text-white">Assigned Tickets</h2>
+                                    <p className="mt-3 text-slate-400">View tickets assigned to your account.</p>
+                                </Link>
+                            )}
                         </>
                     )}
                 </section>

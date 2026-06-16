@@ -19,6 +19,10 @@ const assignablePersonSchema = new Schema(
       required: true,
       trim: true,
     },
+    showAssignedTickets: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

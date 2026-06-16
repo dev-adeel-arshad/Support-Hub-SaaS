@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAssignablePeople } from "../../services/assignableServices";
+import { getAssignees } from "../../services/assignableServices";
 
-export const useAssignablePeople = (options = {}) => {
+export const useAssignees = (options = {}) => {
   return useQuery({
-    queryKey: ["assignable-people"],
-    queryFn: getAssignablePeople,
+    queryKey: ["assignees"],
+    queryFn: getAssignees,
     ...options,
   });
 };

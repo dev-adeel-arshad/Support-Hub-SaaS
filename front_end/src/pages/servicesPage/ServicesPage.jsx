@@ -1,87 +1,469 @@
 import { Link } from "react-router-dom";
-
 import { useCurrentUser } from "../../hooks/userHooks/useCurrentUser";
 
 export default function ServicesPage() {
+
     const { data } = useCurrentUser();
+
     const user = data?.data;
 
     return (
-        <div className="min-h-screen bg-slate-950 px-6 py-12 text-slate-100">
-            <div className="mx-auto max-w-7xl space-y-10">
-                <section className="max-w-4xl">
-                    <p className="text-sm font-medium uppercase tracking-wide text-blue-400">Our Services</p>
-                    <h1 className="mt-3 text-4xl font-bold text-white">Support services built around ticket resolution.</h1>
-                    <p className="mt-4 text-slate-400">SupportHub keeps the support flow simple. A user opens a ticket, the request is tracked by status and priority, comments stay attached to the same issue, and admins handle the operational work in the background.</p>
-                </section>
 
-                <section className="grid gap-6 md:grid-cols-3">
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-sm">
-                        <h2 className="text-xl font-semibold text-white">Ticket Creation</h2>
-                        <p className="mt-3 text-slate-400">Open a new support request with a title, description, priority, and optional attachment. This is the core service for every signed-in user.</p>
-                        <Link to={user ? "/create-ticket" : "/register-user"} className="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-3 text-white transition hover:bg-blue-700">Open Ticket</Link>
-                    </div>
+        <div className="min-h-screen bg-slate-950 text-slate-100">
 
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-sm">
-                        <h2 className="text-xl font-semibold text-white">Ticket Tracking</h2>
-                        <p className="mt-3 text-slate-400">Follow status updates from open to resolved and keep the full request history in one place. Users can always return to their own list to see what is active, what is done, and what still needs attention.</p>
-                        <Link to={user ? "/tickets" : "/login"} className="mt-6 inline-flex rounded-xl border border-slate-700 px-5 py-3 text-white transition hover:bg-slate-800">View Tickets</Link>
-                    </div>
+            {/* HERO SECTION */}
 
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-sm">
-                        <h2 className="text-xl font-semibold text-white">Comments and Collaboration</h2>
-                        <p className="mt-3 text-slate-400">Add comments to keep the support conversation connected to the same ticket. Admins and users can both respond inside the same thread, so the context never gets lost.</p>
-                        <Link to={user ? "/tickets" : "/login"} className="mt-6 inline-flex rounded-xl border border-slate-700 px-5 py-3 text-white transition hover:bg-slate-800">Continue</Link>
-                    </div>
-                </section>
+            <section className="border-b border-slate-800">
 
-                <section className="grid gap-6 md:grid-cols-2">
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                        <h2 className="text-xl font-semibold text-white">What a user gets</h2>
-                        <ul className="mt-4 space-y-3 text-slate-400">
-                            <li>• A private list of their own submitted tickets.</li>
-                            <li>• Status and priority filters for quick follow-up.</li>
-                            <li>• Comment history attached to each ticket.</li>
-                            <li>• A clean path from registration to ticket creation.</li>
-                        </ul>
-                    </div>
+                <div className="max-w-7xl mx-auto px-6 py-24">
 
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                        <h2 className="text-xl font-semibold text-white">What an admin gets</h2>
-                        <ul className="mt-4 space-y-3 text-slate-400">
-                            <li>• Access to every ticket in the system.</li>
-                            <li>• Status updates, assignment, and comments from one screen.</li>
-                            <li>• A user directory for assigning work by email.</li>
-                            <li>• Dashboard stats grouped by ticket status.</li>
-                        </ul>
-                    </div>
-                </section>
+                    <div className="max-w-4xl">
 
-                {user?.role === "admin" && (
-                    <section className="space-y-4 rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                        <h2 className="text-2xl font-semibold text-white">Admin Services</h2>
-                        <p className="text-slate-400">These options are only visible to administrators.</p>
-                        <div className="grid gap-4 md:grid-cols-3">
-                            <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                                <h3 className="font-semibold text-white">Dashboard Analytics</h3>
-                                <p className="mt-2 text-slate-400">Review grouped ticket counts by status.</p>
-                            </div>
-                            <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                                <h3 className="font-semibold text-white">Status Management</h3>
-                                <p className="mt-2 text-slate-400">Move tickets through open, in-progress, resolved, and closed.</p>
-                            </div>
-                            <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                                <h3 className="font-semibold text-white">Assignment Control</h3>
-                                <p className="mt-2 text-slate-400">Assign work to team members directly from ticket details.</p>
-                            </div>
-                            <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                                <h3 className="font-semibold text-white">User Directory</h3>
-                                <p className="mt-2 text-slate-400">Look up users and assign a ticket by email.</p>
-                            </div>
+                        <p className="uppercase tracking-widest text-blue-400 text-sm font-medium">
+
+                            SupportHub Services
+
+                        </p>
+
+                        <h1 className="mt-5 text-5xl font-bold leading-tight text-white">
+
+                            Simplifying Support Ticket
+                            Management For Modern Teams
+
+                        </h1>
+
+                        <p className="mt-6 text-lg text-slate-400 leading-relaxed">
+
+                            SupportHub provides a centralized system
+                            for creating, tracking, managing and
+                            resolving support requests. Whether you
+                            are an individual user submitting an issue
+                            or an administrator managing hundreds of
+                            tickets, SupportHub keeps everything
+                            organized and accessible.
+
+                        </p>
+
+                        <div className="flex flex-wrap gap-4 mt-10">
+
+                            <Link
+                                to={
+                                    user
+                                        ? "/create-ticket"
+                                        : "/register-user"
+                                }
+                                className="
+                                    bg-blue-600
+                                    hover:bg-blue-700
+                                    px-6
+                                    py-3
+                                    rounded-xl
+                                    font-medium
+                                    transition-all
+                                    duration-300
+                                    hover:-translate-y-1
+                                "
+                            >
+                                Create Ticket
+                            </Link>
+
+                            <Link
+                                to={
+                                    user
+                                        ? "/tickets"
+                                        : "/login"
+                                }
+                                className="
+                                    border
+                                    border-slate-700
+                                    hover:border-blue-500
+                                    px-6
+                                    py-3
+                                    rounded-xl
+                                    transition-all
+                                    duration-300
+                                    hover:-translate-y-1
+                                "
+                            >
+                                Explore Features
+                            </Link>
+
                         </div>
-                    </section>
-                )}
-            </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            {/* SERVICES */}
+
+            <section className="max-w-7xl mx-auto px-6 py-20">
+
+                <div className="mb-12">
+
+                    <h2 className="text-3xl font-bold text-white">
+
+                        Core Services
+
+                    </h2>
+
+                    <p className="mt-3 text-slate-400">
+
+                        Everything needed to handle support requests
+                        from submission to resolution.
+
+                    </p>
+
+                </div>
+
+                <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+
+                    {/* CARD 1 */}
+
+                    <div
+                        className="
+                            group
+                            rounded-3xl
+                            border
+                            border-slate-800
+                            bg-slate-900
+                            p-8
+                            transition-all
+                            duration-300
+                            hover:border-blue-500
+                            hover:-translate-y-2
+                        "
+                    >
+
+                        <div className="text-4xl mb-5">
+                            🎫
+                        </div>
+
+                        <h3 className="text-xl font-semibold text-white">
+
+                            Ticket Creation
+
+                        </h3>
+
+                        <p className="mt-4 text-slate-400 leading-relaxed">
+
+                            Create support requests with detailed
+                            descriptions, priority levels and
+                            optional file attachments to help
+                            administrators understand issues faster.
+
+                        </p>
+
+                        <Link
+                            to={
+                                user
+                                    ? "/create-ticket"
+                                    : "/register-user"
+                            }
+                            className="inline-block mt-6 text-blue-400"
+                        >
+                            Get Started →
+                        </Link>
+
+                    </div>
+
+                    {/* CARD 2 */}
+
+                    <div
+                        className="
+                            group
+                            rounded-3xl
+                            border
+                            border-slate-800
+                            bg-slate-900
+                            p-8
+                            transition-all
+                            duration-300
+                            hover:border-blue-500
+                            hover:-translate-y-2
+                        "
+                    >
+
+                        <div className="text-4xl mb-5">
+                            📊
+                        </div>
+
+                        <h3 className="text-xl font-semibold text-white">
+
+                            Ticket Tracking
+
+                        </h3>
+
+                        <p className="mt-4 text-slate-400 leading-relaxed">
+
+                            Track tickets through every stage
+                            including Open, In Progress,
+                            Resolved and Closed while maintaining
+                            complete visibility.
+
+                        </p>
+
+                        <Link
+                            to={
+                                user
+                                    ? "/tickets"
+                                    : "/login"
+                            }
+                            className="inline-block mt-6 text-blue-400"
+                        >
+                            View Tickets →
+                        </Link>
+
+                    </div>
+
+                    {/* CARD 3 */}
+
+                    <div
+                        className="
+                            group
+                            rounded-3xl
+                            border
+                            border-slate-800
+                            bg-slate-900
+                            p-8
+                            transition-all
+                            duration-300
+                            hover:border-blue-500
+                            hover:-translate-y-2
+                        "
+                    >
+
+                        <div className="text-4xl mb-5">
+                            💬
+                        </div>
+
+                        <h3 className="text-xl font-semibold text-white">
+
+                            Comment System
+
+                        </h3>
+
+                        <p className="mt-4 text-slate-400 leading-relaxed">
+
+                            Keep discussions attached directly to
+                            tickets so administrators and users
+                            can communicate without losing context.
+
+                        </p>
+
+                        <Link
+                            to={
+                                user
+                                    ? "/tickets"
+                                    : "/login"
+                            }
+                            className="inline-block mt-6 text-blue-400"
+                        >
+                            Continue →
+                        </Link>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            {/* BENEFITS */}
+
+            <section className="max-w-7xl mx-auto px-6 pb-20">
+
+                <div className="grid lg:grid-cols-2 gap-8">
+
+                    <div
+                        className="
+                            bg-slate-900
+                            border
+                            border-slate-800
+                            rounded-3xl
+                            p-8
+                        "
+                    >
+
+                        <h2 className="text-2xl font-bold text-white">
+
+                            Benefits For Users
+
+                        </h2>
+
+                        <ul className="mt-6 space-y-4 text-slate-400">
+
+                            <li>✓ Create tickets in seconds</li>
+
+                            <li>✓ Monitor ticket progress</li>
+
+                            <li>✓ Priority based support requests</li>
+
+                            <li>✓ Attachment support</li>
+
+                            <li>✓ Centralized communication</li>
+
+                            <li>✓ Organized ticket history</li>
+
+                        </ul>
+
+                    </div>
+
+                    <div
+                        className="
+                            bg-slate-900
+                            border
+                            border-slate-800
+                            rounded-3xl
+                            p-8
+                        "
+                    >
+
+                        <h2 className="text-2xl font-bold text-white">
+
+                            Benefits For Administrators
+
+                        </h2>
+
+                        <ul className="mt-6 space-y-4 text-slate-400">
+
+                            <li>✓ Complete ticket oversight</li>
+
+                            <li>✓ User management</li>
+
+                            <li>✓ Ticket assignment controls</li>
+
+                            <li>✓ Status management tools</li>
+
+                            <li>✓ Dashboard analytics</li>
+
+                            <li>✓ Team collaboration workflow</li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            {/* ADMIN SECTION */}
+
+            {user?.role === "admin" && (
+
+                <section className="max-w-7xl mx-auto px-6 pb-20">
+
+                    <div
+                        className="
+                            rounded-3xl
+                            border
+                            border-blue-900
+                            bg-gradient-to-r
+                            from-slate-900
+                            to-slate-950
+                            p-8
+                        "
+                    >
+
+                        <h2 className="text-3xl font-bold text-white">
+
+                            Administrator Tools
+
+                        </h2>
+
+                        <p className="mt-3 text-slate-400">
+
+                            Special capabilities available only to
+                            administrators.
+
+                        </p>
+
+                        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4 mt-10">
+
+                            <div className="bg-slate-950 rounded-2xl p-5 border border-slate-800">
+                                <h3 className="font-semibold">
+                                    Dashboard Analytics
+                                </h3>
+                            </div>
+
+                            <div className="bg-slate-950 rounded-2xl p-5 border border-slate-800">
+                                <h3 className="font-semibold">
+                                    Ticket Assignment
+                                </h3>
+                            </div>
+
+                            <div className="bg-slate-950 rounded-2xl p-5 border border-slate-800">
+                                <h3 className="font-semibold">
+                                    Status Management
+                                </h3>
+                            </div>
+
+                            <div className="bg-slate-950 rounded-2xl p-5 border border-slate-800">
+                                <h3 className="font-semibold">
+                                    User Directory
+                                </h3>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            )}
+
+            {/* CTA */}
+
+            <section className="border-t border-slate-800">
+
+                <div className="max-w-5xl mx-auto px-6 py-20 text-center">
+
+                    <h2 className="text-4xl font-bold text-white">
+
+                        Ready To Manage Support Requests Better?
+
+                    </h2>
+
+                    <p className="mt-5 text-slate-400 max-w-2xl mx-auto">
+
+                        Start organizing support tickets, tracking
+                        progress and collaborating with your team
+                        through a single platform.
+
+                    </p>
+
+                    <div className="mt-10">
+
+                        <Link
+                            to={
+                                user
+                                    ? "/create-ticket"
+                                    : "/register-user"
+                            }
+                            className="
+                                inline-flex
+                                bg-blue-600
+                                hover:bg-blue-700
+                                px-8
+                                py-4
+                                rounded-xl
+                                font-medium
+                                transition-all
+                                duration-300
+                                hover:-translate-y-1
+                            "
+                        >
+                            Get Started Today
+                        </Link>
+
+                    </div>
+
+                </div>
+
+            </section>
+
         </div>
+
     );
+
 }

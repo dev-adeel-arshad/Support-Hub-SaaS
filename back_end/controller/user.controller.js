@@ -143,8 +143,13 @@ const delete_user = asyncHandler(async (req, res) => {
 
 // GET ALL USERS (ADMIN ONLY)
 const getAllUsers = asyncHandler(async (req, res) => {
+    const filter = {};
 
-    const users = await User.find({})
+    if (req.query.role) {
+        filter.role = req.query.role;
+    }
+
+    const users = await User.find(filter)
         .select("-password -accessToken")
         .sort({ createdAt: -1 });
 
@@ -206,4 +211,87 @@ const ticketsStat = asyncHandler(async (req, res) => {
     );
 
 });
-export { register_user, login_Controller, logoutUser, currentuser, delete_user, getAllUsers, ticketsStat };
+const updateUserRole = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    const allowedRoles = ["user", "admin", "assignee"];
+
+    if (!role || !allowedRoles.includes(role)) {
+        throw new ApiError(400, "Invalid role value");
+    }
+
+    if (req.user._id.toString() === id && role !== "admin") {
+        throw new ApiError(400, "Cannot change your own role");
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { role },
+        { new: true, runValidators: true }
+    ).select("-password -accessToken");
+
+    if (!updatedUser) {
+        throw new ApiError(404, "User not found");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, updatedUser, "User role updated successfully")
+    );
+});
+
+const promoteToAssignee = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        throw new ApiError(400, "Email is required");
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    if (user.role === "assignee") {
+        throw new ApiError(400, "User is already an assignee");
+    }
+
+    user.role = "assignee";
+    await user.save();
+
+    const updatedUser = await User.findById(user._id).select("-password -accessToken");
+
+    return res.status(200).json(
+        new ApiResponse(200, updatedUser, "User promoted to assignee successfully")
+    );
+});
+
+const demoteFromAssignee = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        throw new ApiError(400, "Email is required");
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    if (user.role !== "assignee") {
+        throw new ApiError(400, "User is not an assignee");
+    }
+
+    user.role = "user";
+    await user.save();
+
+    const updatedUser = await User.findById(user._id).select("-password -accessToken");
+
+    return res.status(200).json(
+        new ApiResponse(200, updatedUser, "User demoted from assignee successfully")
+    );
+});
+
+export { register_user, login_Controller, logoutUser, currentuser, delete_user, getAllUsers, ticketsStat, updateUserRole, promoteToAssignee, demoteFromAssignee };

@@ -1,6 +1,5 @@
 import { User } from "../models/user.model.js";
 import { Ticket } from "../models/ticket.model.js";
-import { AssignablePerson } from "../models/assignable.model.js";
 
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -40,6 +39,7 @@ const createTicket = asyncHandler(async (req, res) => {
         status: "open",
         createdBy: req.user._id,
         assignedTo: null,
+        owner: req.user._id,
     });
 
     if (!ticket) {
@@ -91,8 +91,10 @@ const getTicket = asyncHandler(async (req, res) => {
         ticket.createdBy._id.toString() === req.user._id.toString();
 
     const isAdmin = req.user.role === "admin";
+    const isAssignee =
+        ticket.assignedTo?._id?.toString() === req.user._id.toString();
 
-    if (!isOwner && !isAdmin) {
+    if (!isOwner && !isAdmin && !isAssignee) {
         throw new ApiError(403, "Access denied");
     }
 
@@ -151,6 +153,26 @@ const changeStatus = asyncHandler(async (req, res) => {
         );
     }
 
+    const ticket = await Ticket.findById(id);
+
+    if (!ticket) {
+        throw new ApiError(
+            404,
+            "Ticket not found"
+        );
+    }
+
+    const isAdmin = req.user.role === "admin";
+    const isAssigned =
+        ticket.assignedTo?.toString() === req.user._id.toString();
+
+    if (!isAdmin && !isAssigned) {
+        throw new ApiError(
+            403,
+            "You are not authorized to update this ticket status"
+        );
+    }
+
     const updatedTicket =
         await Ticket.findByIdAndUpdate(
             id,
@@ -161,14 +183,9 @@ const changeStatus = asyncHandler(async (req, res) => {
                 new: true,
                 runValidators: true,
             }
-        );
-
-    if (!updatedTicket) {
-        throw new ApiError(
-            404,
-            "Ticket not found"
-        );
-    }
+        )
+            .populate("createdBy", "username email")
+            .populate("assignedTo", "username email");
 
     return res.status(200).json(
         new ApiResponse(
@@ -195,24 +212,23 @@ const assignTicket = asyncHandler(async (req, res) => {
 
     let assignedUser = null;
 
-    if (assignedToEmail) {
-        const isAllowed = await AssignablePerson.findOne({ email: assignedToEmail });
-        if (!isAllowed) {
-            throw new ApiError(
-                403,
-                "This user is not in the assignable people list"
-            );
-        }
-
-        assignedUser = await User.findOne({ email: assignedToEmail });
-    } else {
+    if (assignedTo) {
         assignedUser = await User.findById(assignedTo);
+    } else {
+        assignedUser = await User.findOne({ email: assignedToEmail });
     }
 
     if (!assignedUser) {
         throw new ApiError(
             404,
             "Assigned user not found"
+        );
+    }
+
+    if (assignedUser.role !== "assignee") {
+        throw new ApiError(
+            400,
+            "Assigned user must have the assignee role"
         );
     }
 
@@ -227,7 +243,9 @@ const assignTicket = asyncHandler(async (req, res) => {
                 new: true,
                 runValidators: true,
             }
-        );
+        )
+            .populate("createdBy", "username email")
+            .populate("assignedTo", "username email");
 
     if (!ticket) {
         throw new ApiError(
@@ -245,6 +263,17 @@ const assignTicket = asyncHandler(async (req, res) => {
     );
 });
 
+const getAssignedTickets = asyncHandler(async (req, res) => {
+    const tickets = await Ticket.find({ assignedTo: req.user._id })
+        .populate("createdBy", "username email")
+        .populate("assignedTo", "username email")
+        .sort({ createdAt: -1 });
+
+    return res.status(200).json(
+        new ApiResponse(200, tickets, "Assigned tickets fetched successfully")
+    );
+});
+
 export {
     createTicket,
     userTickets,
@@ -252,4 +281,5 @@ export {
     getAllTickets,
     changeStatus,
     assignTicket,
+    getAssignedTickets,
 };

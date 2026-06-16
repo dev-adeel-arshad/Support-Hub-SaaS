@@ -7,6 +7,7 @@ import {
     getAllTickets,
     changeStatus,
     assignTicket,
+    getAssignedTickets,
 } from "../controller/ticket.controller.js";
 
 import { authMiddleware } from "../middlewares/auth.middleware.js";
@@ -32,6 +33,12 @@ router.get(
     userTickets
 );
 
+router.get(
+    "/assigned",
+    authMiddleware,
+    getAssignedTickets
+);
+
 // ADMIN ROUTES
 
 router.get(
@@ -50,7 +57,6 @@ router.get(
 router.patch(
     "/:id/status",
     authMiddleware,
-    isAdminMiddleware,
     changeStatus
 );
 

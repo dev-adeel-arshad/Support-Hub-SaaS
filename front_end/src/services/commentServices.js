@@ -12,12 +12,6 @@ export const getComments = async (ticketId) => {
         return result.data;
 
     } catch (error) {
-
-        console.error(
-            "Error fetching comments:",
-            error
-        );
-
         throw error;
     }
 };
@@ -40,12 +34,6 @@ export const addComment = async ({
         return result.data;
 
     } catch (error) {
-
-        console.error(
-            "Error adding comment:",
-            error
-        );
-
         throw error;
     }
 };

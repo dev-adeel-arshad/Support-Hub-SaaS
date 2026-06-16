@@ -1,131 +1,77 @@
 import { useState } from "react";
-
 import { useQueryClient } from "@tanstack/react-query";
+import { useAddComment } from "../../hooks/comment/useAddComment";
+import toast from "react-hot-toast";
 
-import {
-    useAddComment,
-} from "../../hooks/comment/useAddComment";
+export default function CommentSection({ ticketId, comments }) {
+    const [message, setMessage] = useState("");
+    const queryClient = useQueryClient();
+    const mutation = useAddComment(ticketId);
 
-export default function CommentSection({
-    ticketId,
-    comments,
-}) {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!message.trim()) return;
 
-    const [message, setMessage] =
-        useState("");
+        try {
+            await mutation.mutateAsync({ ticketId, message });
+            setMessage("");
 
-    const queryClient =
-        useQueryClient();
-
-    const mutation =
-        useAddComment(ticketId);
-
-    const handleSubmit =
-        async (e) => {
-
-            e.preventDefault();
-
-            if (!message.trim())
-                return;
-
-            try {
-
-                await mutation.mutateAsync({
-
-                    ticketId,
-
-                    message,
-
-                });
-
-                setMessage("");
-
-                await queryClient.invalidateQueries({
-
-                    queryKey: [
-                        "comments",
-                        ticketId,
-                    ],
-
-                });
-
-            } catch (error) {
-
-                console.log(error);
-
-            }
-
-        };
+            await queryClient.invalidateQueries({
+                queryKey: ["comments", ticketId],
+            });
+        } catch (error) {
+            toast.error("Failed to add comment");
+        }
+    };
 
     return (
+        <div className="mt-10 space-y-6">
 
-        <div className="mt-8">
+            {/* INPUT BOX */}
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 backdrop-blur p-6 shadow-xl">
 
-            <div className="bg-white p-6 rounded-xl shadow">
-
-                <h2 className="text-2xl font-semibold mb-4">
+                <h2 className="text-xl font-semibold text-white mb-4">
                     Comments
                 </h2>
 
-                <form
-                    onSubmit={handleSubmit}
-                >
+                <form onSubmit={handleSubmit} className="space-y-4">
 
                     <textarea
                         value={message}
-                        onChange={(e) =>
-                            setMessage(
-                                e.target.value
-                            )
-                        }
+                        onChange={(e) => setMessage(e.target.value)}
                         rows={4}
-                        className="w-full border rounded-lg p-3"
-                        placeholder="Add comment..."
+                        className="w-full rounded-xl border border-slate-700 bg-slate-950 p-4 text-white outline-none focus:border-blue-500 transition"
+                        placeholder="Write your comment..."
                     />
 
-                    <button className="mt-3 bg-blue-600 text-white px-5 py-2 rounded-lg">
+                    <button
+                        className="px-5 py-2 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
+                    >
                         Add Comment
                     </button>
 
                 </form>
-
             </div>
 
-            <div className="space-y-4 mt-6">
+            {/* COMMENTS LIST */}
+            <div className="space-y-4">
 
-                {comments.map(
-                    (comment) => (
+                {comments.map((comment) => (
+                    <div
+                        key={comment._id}
+                        className="rounded-2xl border border-slate-800 bg-slate-900/30 p-5 hover:bg-slate-900/50 transition"
+                    >
+                        <h3 className="font-semibold text-blue-400">
+                            {comment.user?.username}
+                        </h3>
 
-                        <div
-                            key={comment._id}
-                            className="bg-white p-4 rounded-xl shadow"
-                        >
-
-                            <h3 className="font-semibold">
-
-                                {
-                                    comment.user
-                                        ?.username
-                                }
-
-                            </h3>
-
-                            <p className="mt-2">
-
-                                {
-                                    comment.message
-                                }
-
-                            </p>
-
-                        </div>
-
-                    )
-                )}
+                        <p className="mt-2 text-slate-300">
+                            {comment.message}
+                        </p>
+                    </div>
+                ))}
 
             </div>
-
         </div>
-
     );
 }

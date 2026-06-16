@@ -13,12 +13,6 @@ export const createTicket = async (formData) => {
         return result.data;
 
     } catch (error) {
-
-        console.error(
-            "Error creating ticket:",
-            error
-        );
-
         throw error;
     }
 };
@@ -34,12 +28,6 @@ export const getMyTickets = async () => {
         return result.data;
 
     } catch (error) {
-
-        console.error(
-            "Error fetching tickets:",
-            error
-        );
-
         throw error;
     }
 };
@@ -58,12 +46,6 @@ export const getAllTickets = async (filters = {}) => {
         return result.data;
 
     } catch (error) {
-
-        console.error(
-            "Error fetching all tickets:",
-            error
-        );
-
         throw error;
     }
 };
@@ -79,30 +61,32 @@ export const getTicketById = async (id) => {
         return result.data;
 
     } catch (error) {
-
-        console.error(
-            "Error fetching ticket:",
-            error
-        );
-
         throw error;
     }
 };
 
 
 export const getTicket = async (id) => {
-    return await axiosInstance.get(`/tickets/${id}`);
+    const result = await axiosInstance.get(`/tickets/${id}`);
+    return result.data;
 };
 
 export const changeTicketStatus = async ({ id, status }) => {
-    return await axiosInstance.patch(`/tickets/${id}/status`, {
+    const result = await axiosInstance.patch(`/tickets/${id}/status`, {
         status,
     });
+    return result.data;
 };
 
 export const assignTicket = async ({ id, userId, assignedToEmail }) => {
-    return await axiosInstance.patch(`/tickets/${id}/assign`, {
+    const result = await axiosInstance.patch(`/tickets/${id}/assign`, {
         assignedTo: userId,
         assignedToEmail,
     });
+    return result.data;
+};
+
+export const getAssignedTickets = async () => {
+    const result = await axiosInstance.get("/tickets/assigned");
+    return result.data;
 };

@@ -8,6 +8,7 @@ import Home from "../pages/homePage/HomePage";
 import Dashboard from "../pages/dashboardPage/DashboardPage";
 import CreateTicket from "../pages/createTicketPage/CreateTicket";
 import MyTickets from "../pages/myTicketsPage/MyTickets";
+import AssignedTickets from "../pages/myTicketsPage/AssignedTickets";
 import TicketDetails from "../pages/TicketDetails/TicketDetails";
 import Login from "../pages/loginPage/LoginPage";
 import RegisterUser from "../pages/registerUser/RegisterPage";
@@ -15,7 +16,7 @@ import ServicesPage from "../pages/servicesPage/ServicesPage";
 import ContactPage from "../pages/contactPage/ContactPage";
 import ProfilePage from "../pages/profilePage/ProfilePage";
 import AdminUsersPage from "../pages/adminUsersPage/AdminUsersPage";
-import AssignablePeoplePage from "../pages/adminUsersPage/AssignablePeoplePage";
+import ManageAssignees from "../pages/adminUsersPage/ManageAssignees";
 import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRouter() {
@@ -63,6 +64,11 @@ export default function AppRouter() {
                         path="/profile"
                         element={<ProfilePage />}
                     />
+
+                    <Route
+                        path="/assigned"
+                        element={<AssignedTickets />}
+                    />
                 </Route>
 
                 <Route element={<AdminRoute />}>
@@ -82,8 +88,8 @@ export default function AppRouter() {
                     />
 
                     <Route
-                        path="/admin/assignable"
-                        element={<AssignablePeoplePage />}
+                        path="/admin/assignees"
+                        element={<ManageAssignees />}
                     />
                 </Route>
             </Route>

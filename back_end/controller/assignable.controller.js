@@ -3,6 +3,14 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
+const getMyAssignablePerson = asyncHandler(async (req, res) => {
+  const person = await AssignablePerson.findOne({ email: req.user.email });
+
+  return res.status(200).json(
+    new ApiResponse(200, person || null, "Current assignable profile fetched successfully")
+  );
+});
+
 const getAssignablePeople = asyncHandler(async (req, res) => {
   const people = await AssignablePerson.find({}).sort({ createdAt: -1 });
 
@@ -44,4 +52,4 @@ const deleteAssignablePerson = asyncHandler(async (req, res) => {
   );
 });
 
-export { getAssignablePeople, createAssignablePerson, deleteAssignablePerson };
+export { getMyAssignablePerson, getAssignablePeople, createAssignablePerson, deleteAssignablePerson };

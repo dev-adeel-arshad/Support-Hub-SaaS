@@ -1,3 +1,5 @@
+
+
 import { Link, useNavigate } from "react-router-dom";
 
 import { registerSchema } from "../../validator/userDataValidator";
@@ -87,37 +89,54 @@ export default function RegisterPage() {
 
     return (
 
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center px-6">
+        <div
+            className="
+                min-h-screen
+                bg-slate-950
+                flex
+                items-center
+                justify-center
+                px-4
+                py-12
+            "
+        >
 
             <div
                 className="
                     w-full
-                    max-w-md
+                    max-w-lg
                     bg-slate-900
                     border
                     border-slate-800
                     rounded-3xl
-                    p-8
+                    p-6
+                    md:p-10
                     shadow-2xl
+                    transition-all
+                    duration-300
+                    hover:border-blue-500
                 "
             >
+
+                {/* LOGO */}
 
                 <div className="text-center mb-8">
 
                     <div
                         className="
-                            w-14
-                            h-14
-                            rounded-xl
+                            w-16
+                            h-16
+                            rounded-2xl
                             bg-blue-600
                             flex
                             items-center
                             justify-center
                             text-white
                             font-bold
-                            text-xl
+                            text-2xl
                             mx-auto
                             mb-5
+                            shadow-lg
                         "
                     >
                         SH
@@ -126,6 +145,7 @@ export default function RegisterPage() {
                     <h1
                         className="
                             text-3xl
+                            md:text-4xl
                             font-bold
                             text-white
                         "
@@ -137,13 +157,17 @@ export default function RegisterPage() {
                         className="
                             text-slate-400
                             mt-3
+                            leading-relaxed
                         "
                     >
-                        Join SupportHub and start
-                        managing support tickets.
+                        Join SupportHub and manage your
+                        support requests in a simple,
+                        organized and professional way.
                     </p>
 
                 </div>
+
+                {/* FORM */}
 
                 <form
                     onSubmit={handleSubmit(onSubmit)}
@@ -159,9 +183,9 @@ export default function RegisterPage() {
                     />
 
                     <Input
-                        label="Email"
+                        label="Email Address"
                         type="email"
-                        placeholder="Enter email"
+                        placeholder="Enter email address"
                         register={register("email")}
                         error={errors.email}
                     />
@@ -169,7 +193,7 @@ export default function RegisterPage() {
                     <Input
                         label="Password"
                         type="password"
-                        placeholder="Enter password"
+                        placeholder="Create password"
                         register={register("password")}
                         error={errors.password}
                     />
@@ -183,9 +207,7 @@ export default function RegisterPage() {
 
                     <Button
                         type="submit"
-                        disabled={
-                            registerMutation.isPending
-                        }
+                        disabled={registerMutation.isPending}
                     >
                         {
                             registerMutation.isPending
@@ -196,18 +218,12 @@ export default function RegisterPage() {
 
                 </form>
 
-                <div
-                    className="
-                        mt-8
-                        text-center
-                    "
-                >
+                {/* LOGIN LINK */}
 
-                    <p
-                        className="
-                            text-slate-400
-                        "
-                    >
+                <div className="mt-8 text-center">
+
+                    <p className="text-slate-400">
+
                         Already have an account?
 
                         <Link
@@ -217,10 +233,34 @@ export default function RegisterPage() {
                                 text-blue-500
                                 hover:text-blue-400
                                 font-medium
+                                transition-colors
                             "
                         >
                             Login
                         </Link>
+
+                    </p>
+
+                </div>
+
+                {/* EXTRA INFO */}
+
+                <div
+                    className="
+                        mt-8
+                        pt-6
+                        border-t
+                        border-slate-800
+                        text-center
+                    "
+                >
+
+                    <p className="text-sm text-slate-500">
+
+                        By creating an account, you can
+                        submit tickets, track their status,
+                        upload attachments and communicate
+                        with support staff through comments.
 
                     </p>
 
@@ -231,4 +271,5 @@ export default function RegisterPage() {
         </div>
 
     );
+
 }

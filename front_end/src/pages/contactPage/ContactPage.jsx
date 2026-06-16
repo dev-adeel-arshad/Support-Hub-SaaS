@@ -1,70 +1,429 @@
+
 export default function ContactPage() {
+
     return (
-        <div className="min-h-screen bg-slate-950 px-6 py-12 text-slate-100">
-            <div className="mx-auto max-w-5xl space-y-8">
-                <section>
-                    <p className="text-sm font-medium uppercase tracking-wide text-blue-400">Contact Us</p>
-                    <h1 className="mt-3 text-4xl font-bold text-white">Reach the SupportHub team.</h1>
-                    <p className="mt-4 text-slate-400">Use these channels for product questions, account help, billing questions, or support guidance. The goal is to keep the contact path simple and easy to understand from the first visit.</p>
-                </section>
 
-                <section className="grid gap-6 md:grid-cols-3">
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                        <h2 className="text-xl font-semibold text-white">Email</h2>
-                        <p className="mt-3 text-slate-400">support@supporthub.local</p>
-                        <p className="mt-3 text-sm text-slate-500">Best for ticket follow-up and general platform questions.</p>
-                    </div>
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                        <h2 className="text-xl font-semibold text-white">Phone</h2>
-                        <p className="mt-3 text-slate-400">+1 (555) 123-4567</p>
-                        <p className="mt-3 text-sm text-slate-500">Available during business hours for urgent account issues.</p>
-                    </div>
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                        <h2 className="text-xl font-semibold text-white">Hours</h2>
-                        <p className="mt-3 text-slate-400">Monday to Friday, 9:00 AM to 6:00 PM</p>
-                        <p className="mt-3 text-sm text-slate-500">Response time depends on priority and ticket volume.</p>
-                    </div>
-                </section>
+        <div className="min-h-screen bg-slate-950 text-white">
 
-                <section className="grid gap-6 md:grid-cols-2">
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                        <h2 className="text-2xl font-semibold text-white">Need help with a ticket?</h2>
-                        <p className="mt-3 text-slate-400">If you are already signed in, the fastest path is to open or update your existing ticket so the support history stays connected.</p>
+            {/* HERO */}
+
+            <section className="px-6 pt-20 pb-16">
+
+                <div className="max-w-7xl mx-auto">
+
+                    <div className="max-w-3xl">
+
+                        <span
+                            className="
+                                inline-flex
+                                rounded-full
+                                border
+                                border-blue-500/30
+                                bg-blue-500/10
+                                px-4
+                                py-2
+                                text-sm
+                                text-blue-400
+                            "
+                        >
+                            Contact SupportHub
+                        </span>
+
+                        <h1
+                            className="
+                                mt-6
+                                text-5xl
+                                font-bold
+                                leading-tight
+                            "
+                        >
+                            Let's solve your
+                            support challenges
+                            together.
+                        </h1>
+
+                        <p
+                            className="
+                                mt-6
+                                text-lg
+                                text-slate-400
+                                leading-relaxed
+                            "
+                        >
+                            Whether you need help with ticket
+                            management, user workflows,
+                            assignments, comments, role-based
+                            access, or platform guidance,
+                            we're here to help.
+                        </p>
+
                     </div>
 
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                        <h2 className="text-2xl font-semibold text-white">Common topics</h2>
-                        <ul className="mt-4 space-y-3 text-slate-400">
-                            <li>• Account access and login issues.</li>
-                            <li>• Ticket creation and attachment help.</li>
-                            <li>• Status updates and assignment questions.</li>
-                            <li>• Admin workflow and dashboard support.</li>
-                        </ul>
-                    </div>
-                </section>
+                </div>
 
-                <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-                    <h2 className="text-2xl font-semibold text-white">Send a message</h2>
-                    <div className="mt-6 grid gap-4 md:grid-cols-2">
-                        <input
-                            placeholder="Your name"
-                            className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
-                        />
-                        <input
-                            placeholder="Your email"
-                            className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
-                        />
+            </section>
+
+            {/* CONTACT CARDS */}
+
+            <section className="px-6">
+
+                <div
+                    className="
+                        max-w-7xl
+                        mx-auto
+                        grid
+                        gap-6
+                        md:grid-cols-3
+                    "
+                >
+
+                    <div
+                        className="
+                            rounded-3xl
+                            border
+                            border-slate-800
+                            bg-slate-900
+                            p-8
+                            transition-all
+                            duration-300
+                            hover:border-blue-500
+                            hover:-translate-y-1
+                        "
+                    >
+
+                        <h2 className="text-2xl font-semibold">
+                            Email Support
+                        </h2>
+
+                        <p className="mt-4 text-slate-400">
+                            adeelarshad.dev@gmail.com
+                        </p>
+
+                        <p className="mt-4 text-slate-500">
+                            Best for technical questions,
+                            account assistance,
+                            feature requests and
+                            ticket-related discussions.
+                        </p>
+
                     </div>
-                    <textarea
-                        rows={5}
-                        placeholder="How can we help?"
-                        className="mt-4 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
-                    />
-                    <button className="mt-4 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700">
-                        Send Message
-                    </button>
-                </section>
-            </div>
+
+                    <div
+                        className="
+                            rounded-3xl
+                            border
+                            border-slate-800
+                            bg-slate-900
+                            p-8
+                            transition-all
+                            duration-300
+                            hover:border-blue-500
+                            hover:-translate-y-1
+                        "
+                    >
+
+                        <h2 className="text-2xl font-semibold">
+                            Phone Contact
+                        </h2>
+
+                        <p className="mt-4 text-slate-400">
+                            0337 2188389
+                        </p>
+
+                        <p className="mt-4 text-slate-500">
+                            Ideal for urgent inquiries,
+                            project discussions,
+                            collaboration opportunities,
+                            and support consultations.
+                        </p>
+
+                    </div>
+
+                    <div
+                        className="
+                            rounded-3xl
+                            border
+                            border-slate-800
+                            bg-slate-900
+                            p-8
+                            transition-all
+                            duration-300
+                            hover:border-blue-500
+                            hover:-translate-y-1
+                        "
+                    >
+
+                        <h2 className="text-2xl font-semibold">
+                            Response Time
+                        </h2>
+
+                        <p className="mt-4 text-slate-400">
+                            Within 24 Hours
+                        </p>
+
+                        <p className="mt-4 text-slate-500">
+                            Most support requests receive
+                            a response within a single
+                            business day depending on
+                            complexity and priority.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            {/* WHY CONTACT US */}
+
+            <section className="px-6 py-16">
+
+                <div className="max-w-7xl mx-auto">
+
+                    <div className="text-center mb-12">
+
+                        <h2 className="text-4xl font-bold">
+                            Why Reach Out?
+                        </h2>
+
+                        <p className="mt-4 text-slate-400">
+                            SupportHub is designed to make
+                            support management simple,
+                            transparent and efficient.
+                        </p>
+
+                    </div>
+
+                    <div
+                        className="
+                            grid
+                            gap-6
+                            md:grid-cols-2
+                            lg:grid-cols-4
+                        "
+                    >
+
+                        {[
+                            {
+                                title: "Ticket Assistance",
+                                desc: "Get help creating, updating or tracking support tickets."
+                            },
+                            {
+                                title: "Platform Guidance",
+                                desc: "Learn how to make the most of the ticketing workflow."
+                            },
+                            {
+                                title: "Admin Support",
+                                desc: "Assistance with assignments, user management and dashboard usage."
+                            },
+                            {
+                                title: "Technical Questions",
+                                desc: "Discuss integrations, workflows and project-related concerns."
+                            }
+                        ].map((item) => (
+
+                            <div
+                                key={item.title}
+                                className="
+                                    rounded-3xl
+                                    border
+                                    border-slate-800
+                                    bg-slate-900
+                                    p-6
+                                    transition-all
+                                    duration-300
+                                    hover:border-blue-500
+                                    hover:-translate-y-1
+                                "
+                            >
+
+                                <h3 className="font-semibold text-xl">
+                                    {item.title}
+                                </h3>
+
+                                <p className="mt-3 text-slate-400">
+                                    {item.desc}
+                                </p>
+
+                            </div>
+
+                        ))}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            {/* COMMON QUESTIONS */}
+
+            <section className="px-6">
+
+                <div
+                    className="
+                        max-w-7xl
+                        mx-auto
+                        rounded-3xl
+                        border
+                        border-slate-800
+                        bg-slate-900
+                        p-10
+                    "
+                >
+
+                    <h2 className="text-3xl font-bold">
+                        Frequently Discussed Topics
+                    </h2>
+
+                    <div
+                        className="
+                            mt-8
+                            grid
+                            gap-6
+                            md:grid-cols-2
+                        "
+                    >
+
+                        <div>
+
+                            <h3 className="font-semibold text-lg">
+                                Account Issues
+                            </h3>
+
+                            <p className="mt-2 text-slate-400">
+                                Login problems, account access,
+                                password assistance and user
+                                management questions.
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <h3 className="font-semibold text-lg">
+                                Ticket Management
+                            </h3>
+
+                            <p className="mt-2 text-slate-400">
+                                Creating tickets, uploading
+                                attachments, tracking status
+                                updates and ticket resolution.
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <h3 className="font-semibold text-lg">
+                                Admin Dashboard
+                            </h3>
+
+                            <p className="mt-2 text-slate-400">
+                                Dashboard analytics,
+                                assignment workflows,
+                                filtering and reporting.
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <h3 className="font-semibold text-lg">
+                                Collaboration
+                            </h3>
+
+                            <p className="mt-2 text-slate-400">
+                                Comments, communication,
+                                ticket ownership and
+                                support team coordination.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            {/* CTA */}
+
+            <section className="px-6 py-16">
+
+                <div
+                    className="
+                        max-w-7xl
+                        mx-auto
+                        rounded-3xl
+                        bg-gradient-to-r
+                        from-blue-600
+                        to-blue-700
+                        p-10
+                        text-center
+                    "
+                >
+
+                    <h2 className="text-4xl font-bold">
+                        Need Immediate Assistance?
+                    </h2>
+
+                    <p className="mt-4 text-blue-100 max-w-2xl mx-auto">
+                        The fastest way to get help is to create
+                        a ticket inside SupportHub or reach out
+                        directly using the contact information
+                        above. You can:
+                    </p>
+                    <p className="mt-3 text-blue-50 max-w-2xl mx-auto text-sm">
+                        📧 Send us an email for detailed inquiries • 📞 Call us for urgent matters
+                    </p>
+
+                    <div
+                        className="
+                            mt-8
+                            flex
+                            flex-wrap
+                            justify-center
+                            gap-4
+                        "
+                    >
+
+                        <div
+                            className="
+                                rounded-xl
+                                bg-white
+                                px-6
+                                py-3
+                                font-semibold
+                                text-blue-700
+                                cursor-default
+                            "
+                        >
+                            📧 Send Email
+                        </div>
+
+                        <div
+                            className="
+                                rounded-xl
+                                border
+                                border-white/30
+                                px-6
+                                py-3
+                                font-semibold
+                                text-white
+                                cursor-default
+                            "
+                        >
+                            📞 Call Us
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
         </div>
+
     );
+
 }

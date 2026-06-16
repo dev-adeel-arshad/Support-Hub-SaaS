@@ -15,8 +15,8 @@ export const useAddComment = (ticketId) => {
             });
         },
 
-        onError: (error) => {
-            console.error("Comment failed:", error);
+        onError: () => {
+            // error handling is managed by the caller
         },
     });
 };

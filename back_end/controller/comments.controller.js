@@ -26,8 +26,10 @@ const addComment = asyncHandler(async (req, res) => {
         ticket.createdBy.toString() === req.user._id.toString();
 
     const isAdmin = req.user.role === "admin";
+    const isAssignee =
+        ticket.assignedTo?.toString() === req.user._id.toString();
 
-    if (!isOwner && !isAdmin) {
+    if (!isOwner && !isAdmin && !isAssignee) {
         throw new ApiError(403, "Access denied to comment on this ticket");
     }
 

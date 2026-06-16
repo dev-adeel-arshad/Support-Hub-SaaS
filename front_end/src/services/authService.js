@@ -7,8 +7,6 @@ const registerUser = async (data) => {
 
         return result.data;
     } catch (error) {
-          console.log("Status:", error.response?.status);
-    console.log("Response:", error.response?.data);
         throw error;
     }
 };
@@ -21,9 +19,6 @@ const loginUser = async (data) => {
 
         return result.data;
     } catch (error) {
-           console.log("Status:", error.response?.status);
-    console.log("Response:", error.response?.data);
-
         throw error;
     }
 };
@@ -34,8 +29,6 @@ const currentUser = async () => {
         return result.data;
     }
     catch (error) {
-        console.log("Status:", error.response?.status);
-    console.log("Response:", error.response?.data);
         throw error;
     }   
 };
