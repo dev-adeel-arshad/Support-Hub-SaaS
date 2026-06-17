@@ -86,6 +86,7 @@ export default function Login() {
                     >
                         Back to Home
                     </Link>
+                </div>
 
                 {/* FORM */}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">

@@ -17,7 +17,9 @@ export default function ProfilePage() {
     const logoutMutation = useMutation({
         mutationFn: logoutUser,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["current-user"] });
+            queryClient.setQueryData(["current-user"], null);
+            queryClient.resetQueries({ queryKey: ["current-user"], exact: true, refetchInactive: true });
+            queryClient.removeQueries({ queryKey: ["current-user"], exact: true });
             toast.success("Logged out successfully");
             navigate("/");
         },
