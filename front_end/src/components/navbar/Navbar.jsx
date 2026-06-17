@@ -223,19 +223,37 @@
 //     );
 // }
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import { useCurrentUser } from "../../hooks/userHooks/useCurrentUser";
 import GuestButtons from "../button/GuestButtons";
+import { logoutUser } from "../../services/authService";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
     const buttonRef = useRef(null);
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const { data } = useCurrentUser();
     const user = data?.data;
+
+    const logoutMutation = useMutation({
+        mutationFn: logoutUser,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["current-user"] });
+            setIsOpen(false);
+            toast.success("Logged out successfully");
+            navigate("/");
+        },
+        onError: () => {
+            toast.error("Unable to logout. Please try again.");
+        },
+    });
 
 
     // outside click close
@@ -388,24 +406,35 @@ export default function Navbar() {
                         <div className="border-t border-slate-800 my-2" />
 
                         {user ? (
-                            <Link
-                                to="/profile"
-                                onClick={() => setIsOpen(false)}
-                                className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-blue-500 transition"
-                            >
-                                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
-                                    {user.username?.charAt(0)?.toUpperCase()}
-                                </div>
+                            <>
+                                <Link
+                                    to="/profile"
+                                    onClick={() => setIsOpen(false)}
+                                    className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-blue-500 transition"
+                                >
+                                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                                        {user.username?.charAt(0)?.toUpperCase()}
+                                    </div>
 
-                                <div>
-                                    <p className="text-white text-sm font-semibold">
-                                        {user.username}
-                                    </p>
-                                    <p className="text-slate-400 text-xs">
-                                        {user.role}
-                                    </p>
-                                </div>
-                            </Link>
+                                    <div>
+                                        <p className="text-white text-sm font-semibold">
+                                            {user.username}
+                                        </p>
+                                        <p className="text-slate-400 text-xs">
+                                            {user.role}
+                                        </p>
+                                    </div>
+                                </Link>
+
+                                <button
+                                    type="button"
+                                    disabled={logoutMutation.isLoading}
+                                    onClick={() => logoutMutation.mutate()}
+                                    className="w-full text-left px-3 py-3 rounded-xl bg-slate-900/90 text-red-400 hover:text-white hover:bg-slate-800 transition disabled:cursor-not-allowed disabled:opacity-60"
+                                >
+                                    {logoutMutation.isLoading ? "Signing out..." : "Logout"}
+                                </button>
+                            </>
                         ) : (
                             <GuestButtons />
                         )}

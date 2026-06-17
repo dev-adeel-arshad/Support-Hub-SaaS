@@ -32,4 +32,14 @@ const currentUser = async () => {
         throw error;
     }   
 };
-export { registerUser, loginUser, currentUser  };    
+
+const logoutUser = async () => {
+    try {
+        const result = await axiosInstance.post("/user/logout");
+        return result.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export { registerUser, loginUser, currentUser, logoutUser };    

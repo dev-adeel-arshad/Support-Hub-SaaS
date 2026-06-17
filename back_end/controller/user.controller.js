@@ -12,7 +12,7 @@ const register_user = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
     const filePath = req.file?.path;
 
-    if (!username || !email || !password || !filePath) {
+    if (!username || !email || !password ) {
         throw new ApiError(400, "All fields are required!");
     }
 
@@ -22,9 +22,10 @@ const register_user = asyncHandler(async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const profileImage = await uploadOnCloudinary(filePath);
-    if (!profileImage) {
-        throw new ApiError(500, "Error while uploading the image on cloudinary");
+    let profileImage = null;
+
+    if (filePath) {
+        profileImage = await uploadOnCloudinary(filePath);
     }
 
     const createdUser = await User.create({
@@ -72,11 +73,12 @@ const login_Controller = asyncHandler(async (req, res) => {
     user.accessToken = accessToken;
     await user.save();
 
+    const isSecure = req.secure || req.headers["x-forwarded-proto"] === "https" || process.env.NODE_ENV === "production";
     const cookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-       
+        secure: isSecure,
+        sameSite: isSecure ? "none" : "lax",
+        path: "/",
     };
 
     const loggedInUser = await User.findById(user._id).select("-password -accessToken");
@@ -101,10 +103,13 @@ const logoutUser = asyncHandler(async (req, res) => {
         },
     });
 
+
     const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     };
 
     return res
@@ -128,14 +133,14 @@ const currentuser = asyncHandler(async (req, res) => {
 // CONTROLLER FOR DELETING A USER (ADMIN ONLY)
 const delete_user = asyncHandler(async (req, res) => {
     const userId = req.params?.id || req.query?.id;
-    if(!userId){
+    if (!userId) {
         throw new ApiError(400, "User ID is required");
     }
     const user = await User.findByIdAndDelete(userId);
 
     if (!user) {
         throw new ApiError(404, "User not found");
-    }   
+    }
     return res.status(200).json(
         new ApiResponse(200, {}, "User deleted successfully")
     );

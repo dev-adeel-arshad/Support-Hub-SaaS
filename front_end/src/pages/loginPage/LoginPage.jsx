@@ -79,7 +79,13 @@ export default function Login() {
                             SupportHub
                         </span>
                     </p>
-                </div>
+
+                    <Link
+                        to="/"
+                        className="mt-4 inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-950 px-4 py-2 text-sm font-medium text-slate-300 hover:border-blue-500 hover:text-white transition"
+                    >
+                        Back to Home
+                    </Link>
 
                 {/* FORM */}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
