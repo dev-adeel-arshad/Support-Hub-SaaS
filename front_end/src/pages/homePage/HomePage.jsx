@@ -20,7 +20,7 @@ export default function HomePage() {
             <section className="relative">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_45%)]" />
 
-                <div className="relative w-full max-w-5xl mx-auto px-6 sm:px-10 lg:px-16 pt-24 pb-14">
+                <div className="relative w-full max-w-5xl mx-auto px-6 sm:px-10 lg:px-16 pt-10 pb-14">
 
                     <span className="inline-flex items-center rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm text-blue-400 tracking-wide">
                         Modern Ticket Management Platform

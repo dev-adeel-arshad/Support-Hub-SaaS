@@ -7,7 +7,7 @@ export default function ContactPage() {
             <section className="relative min-h-[55vh] flex flex-col justify-center">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.15),transparent_50%)]" />
 
-                <div className="relative w-full max-w-5xl mx-auto px-6 sm:px-10 lg:px-16 pt-24 pb-10">
+                <div className="relative w-full max-w-5xl mx-auto px-6 sm:px-10 lg:px-16 pt-10 pb-10">
                     <span className="inline-flex items-center rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm text-blue-400 tracking-wide">
                         Contact SupportHub
                     </span>
