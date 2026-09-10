@@ -25,10 +25,11 @@ const loginRateLimit = createRateLimit({ windowMs : 15 * 60 * 1000, limit: 5 });
 const router = Router();
 // PUBLIC ROUTES
 router.post("/register-user",
-  (req, res, next) => {
-    console.log("REGISTER ROUTE HIT");
-    next();
-  }, registerRateLimit, upload.single("profileImage"), validate(regesterUser), register_user);
+  registerRateLimit,
+  upload.single("profileImage"),
+  validate(regesterUser),
+  register_user
+);
 router.post("/login", loginRateLimit, validate(loginData), login_Controller);
 
 // PROTECTED ROUTES

@@ -12,10 +12,7 @@ const configCloudinary = () => {
             api_secret: process.env.CLOUDINARY_API_SECRET,
         });
     } catch (error) {
-        console.log(
-            "Error while configuration of cloudinary!",
-            error.message
-        );
+        console.error("Cloudinary configuration failed");
     }
 };
 
@@ -30,17 +27,14 @@ const uploadOnCloudinary = async (localFilePath) => {
         if (result) {
             fs.unlinkSync(localFilePath);
         }
-console.log("The result from cloudinary is:",result)
+
         return result.url;
     } catch (error) {
         if (fs.existsSync(localFilePath)) {
             fs.unlinkSync(localFilePath);
         }
 
-        console.error(
-            "Error while Uploading to cloudinary",
-            error
-        );
+        console.error("Cloudinary upload failed");
 
         return null;
     }

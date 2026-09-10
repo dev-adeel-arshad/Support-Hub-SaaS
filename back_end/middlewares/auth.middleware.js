@@ -3,11 +3,9 @@ import { User } from "../models/user.model.js";
 
 const authMiddleware = async (req, res, next) => {
     try {
-        console.log("Auth Middleware Invoked",req.cookies, req.headers);
         const token =
             req.cookies?.accessToken ||
             req.header("Authorization")?.replace("Bearer ", "");
-            console.log("Token from Request:", token);
 
         if (!token) {
             return res.status(401).json({
@@ -20,7 +18,6 @@ const authMiddleware = async (req, res, next) => {
             token,
             process.env.ACCESS_TOKEN_SECRET_KEY
         );
-        console.log("Decoded Token:", decoded);
 
         const user = await User.findById(decoded.id)
             .select("-password -accessToken");

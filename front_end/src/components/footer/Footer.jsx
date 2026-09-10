@@ -199,13 +199,6 @@ export default function Footer() {
 
                     </p>
 
-                    <p className="text-slate-500">
-
-                        Built with React, TanStack Query,
-                        React Hook Form and Express.
-
-                    </p>
-
                 </div>
 
             </div>

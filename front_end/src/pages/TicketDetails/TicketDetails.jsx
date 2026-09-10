@@ -153,15 +153,30 @@ export default function TicketDetails() {
 
             try {
 
+                await changeStatus.mutateAsync({
+                    id,
+                    status,
+                });
+
                 toast.success(
                     "Status updated"
                 );
+
+                setSelectedStatus("");
 
                 queryClient.invalidateQueries({
                     queryKey: [
                         "ticket-details",
                         id,
                     ],
+                });
+
+                queryClient.invalidateQueries({
+                    queryKey: ["tickets"],
+                });
+
+                queryClient.invalidateQueries({
+                    queryKey: ["all-tickets"],
                 });
 
             } catch {

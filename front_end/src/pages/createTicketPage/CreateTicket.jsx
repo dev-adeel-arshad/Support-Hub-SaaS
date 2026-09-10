@@ -53,6 +53,11 @@ export default function CreateTicket() {
             });
 
             navigate("/tickets");
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "auto",
+            });
         },
 
         onError: (error) => {
